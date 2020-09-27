@@ -4,7 +4,8 @@
 #  Matebot
 #  
 #  Copyleft 2012-2020 Iuri Guilherme <https://github.com/iuriguilherme>,
-#     Matehackers <https://github.com/matehackers>
+#     Matehackers <https://github.com/matehackers>,
+#     Fábrica do Futuro <https://github.com/fabricadofuturo-poa>,
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -35,24 +36,11 @@ logging.basicConfig(level=logging.INFO)
 
 import subprocess, sys
 
-from matebot.aio_matebot import run as aiogram_bot
 from matebot.discord_matebot import app as discord_bot
 
-try:
-  from matebot.ptb_matebot import app
-  flask_bot = app
-except Exception as e:
-  logging.debug(repr(e))
-
-try:
-  from matebot.tp_matebot import bot as telepot_bot
-except Exception as e:
-  logging.debug(repr(e))
-
 if __name__ == "__main__":
-  mode = 'aiogram'
-  bot = 'matebot'
-  port = 5000
+  mode = 'discord'
+  bot = 'nasabot'
   ## TODO fazer validação de verdade
   if len(sys.argv) > 1:
     mode = sys.argv[1]
@@ -63,21 +51,12 @@ if __name__ == "__main__":
         u"Usando token do bot \"{}\" do arquivo de configuração.\
           ".format(bot)
       )
-      if len(sys.argv) > 3:
-        port = sys.argv[3]
-        print(u"Alterando porta para {}".format(port))
     else:
       print(u"Nome do bot não informado, {} presumido".format(bot))
   else:
     print(u"Modo de operação não informado, {} presumido.".format(mode))
     print(u"Nome do bot não informado, {} presumido".format(bot))
-  if mode == 'aiogram':
-    aiogram_bot(bot)
-  elif mode == 'discord':
+  if mode == 'discord':
     discord_bot(bot)
-  elif mode == 'flask':
-    flask_bot.run(port=port)
-  elif mode == 'telepot':
-    telepot_bot(mode, bot)
   else:
     print(u"Não entendi nada, não consegui iniciar. Leia o manual por favor.")
