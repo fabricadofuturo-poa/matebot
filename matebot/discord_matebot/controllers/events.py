@@ -29,11 +29,3 @@ from matebot.plugins import nsa20
 def add_events(bot: Bot):
   ## Nasa Space Apps 2020
   nsa20.add_commands(bot)
-  @bot.command()
-  async def design(ctx):
-    await ctx.send(u"digite !design se você é designer ou web designer;")
-
-  @bot.event
-  async def on_ready():
-    logging.info(u"""Conectada com sucesso, o nosso nome de usuário é {0.user}\
-""".format(bot))

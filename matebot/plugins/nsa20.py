@@ -15,33 +15,25 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from discord.ext.commands import Bot
+from discord import utils
+
+async def change_role(ctx):
+  await ctx.message.author.edit(roles = [utils.get(ctx.message.guild.roles,
+    name = str(ctx.command).capitalize())])
 
 def add_commands(bot: Bot):
+  ## Altera cargo de acordo com comando
   @bot.command()
-  async def desenvolvimento(ctx):
-    await ctx.send(u"digite !desenvolvimento se você for desenvolvedor de sistemas;")
-
+  async def desenvolvedor(ctx):
+    await change_role(ctx)
   @bot.command()
   async def design(ctx):
-    await ctx.send(u"digite !design se você é designer ou web designer;")
-
+    await change_role(ctx)
   @bot.command()
   async def negocios(ctx):
-    await ctx.send(u"digite  !negocios se você for da área comercial, empreendedor, gestor, etc;")
-
+    await change_role(ctx)
   @bot.command()
-  async def mkt(ctx):
-    await ctx.send(u"digite !mkt se você é da área de marketing ou publicidade;")
-
-  @bot.command()
-  async def cientista_de_dados(ctx):
-    await ctx.send(u"digite !cientista_de_dados se for o seu caso;")
-
-  @bot.command()
-  async def outros(ctx):
-    await ctx.send(u"digite !outros se sua área de atuação não se encaixa em nenhum dos perfis acima :wink: ")
-
-  @bot.event
-  async def on_member_join(member):
-    logging.info(u"{} entrou no servidor".format(member))
+  async def cientista(ctx):
+    await change_role(ctx)

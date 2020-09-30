@@ -46,55 +46,48 @@ class MateClient(Client):
     super().__init__(*args, **kwargs)
     add_events(self)
 
-  async def on_message(*args, **kwargs):
-    logging.info(u"""Mensagem de {author} no canal #{channel} do servidor {guil\
-d}: {content}""".format(
-        author = args[1].author or '',
-        channel = args[1].channel or '',
-        guild = args[1].guild or '',
-        content = args[1].content or '',
-      )
-    )
+  # ~ async def on_message(*args, **kwargs):
+    # ~ logging.info(u"""Mensagem de {author} no canal #{channel} do servidor {guil\
+# ~ d}: {content}""".format(
+        # ~ author = args[1].author or '',
+        # ~ channel = args[1].channel or '',
+        # ~ guild = args[1].guild or '',
+        # ~ content = args[1].content or '',
+      # ~ )
+    # ~ )
 
   ## Mensagens apagadas
   ## Ver também:
   ## on_bulk_message_delete
   ## on_raw_message_delete
   ## on_raw_bulk_message_delete
-  @bot.event
-  async def on_message_delete(message):
-    logging.info(u"Mesagem apagada: {}".format(message))
+  # ~ async def on_message_delete(message):
+    # ~ logging.info(u"Mesagem apagada: {}".format(message))
 
   ## Mensagem atualizada
-  @bot.event
-  async def on_message_edit(before, after):
-    logging.info(u"Mesagem atualizada. Era: {0}\n\nAgora: {1}".format(
-      before, after))
+  # ~ async def on_message_edit(before, after):
+    # ~ logging.info(u"Mesagem atualizada. Era: {0}\n\nAgora: {1}".format(
+      # ~ before, after))
 
   ## Reações
-  @bot.event
-  async def on_reaction_add(reaction, user):
-    logging.info(u"Reação de {0} em {1}:\n\n{2}".format(
-      user, reaction.message, reaction))
-  @bot.event
-  async def on_reaction_remove(reaction, user):
-    logging.info(u"Reação removida de {0} em {1}:\n\n{2}".format(
-      user, reaction.message, reaction))
+  # ~ async def on_reaction_add(reaction, user):
+    # ~ logging.info(u"Reação de {0} em {1}:\n\n{2}".format(
+      # ~ user, reaction.message, reaction))
+  # ~ async def on_reaction_remove(reaction, user):
+    # ~ logging.info(u"Reação removida de {0} em {1}:\n\n{2}".format(
+      # ~ user, reaction.message, reaction))
 
   ## Servidores
-  @bot.event
-  async def on_guild_join(guild):
-    logging.info(u"Entramos no servidor {}".format(guild))
-  @bot.event
-  async def on_guild_remove(guild):
-    logging.info(u"Saímos do servidor {}".format(guild))
+  # ~ async def on_guild_join(guild):
+    # ~ logging.info(u"Entramos no servidor {}".format(guild))
+  # ~ async def on_guild_remove(guild):
+    # ~ logging.info(u"Saímos do servidor {}".format(guild))
 
   ## Usuários
-  @bot.event
-  async def on_member_join(member):
-    logging.info(u"{} entrou no servidor".format(member))
-  async def on_member_remove(member):
-    logging.info(u"{} saiu do servidor".format(member))
+  # ~ async def on_member_join(member):
+    # ~ logging.info(u"{} entrou no servidor".format(member))
+  # ~ async def on_member_remove(member):
+    # ~ logging.info(u"{} saiu do servidor".format(member))
 
   ## Tratamento de erros
   async def on_error(event, *args, **kwargs):
@@ -109,6 +102,23 @@ d}: {content}""".format(
     await super().on_error(event, *args, **kwargs)
 
 class MateBot(Bot):
+  # ~ async def on_message(self, *args, **kwargs):
+    # ~ logging.info(u"""Mensagem de {author} no canal #{channel} do servidor {guil\
+# ~ d}: {content}""".format(
+        # ~ author = args[0].author or '',
+        # ~ channel = args[0].channel or '',
+        # ~ guild = args[0].guild or '',
+        # ~ content = args[0].content or '',
+      # ~ )
+    # ~ )
+
+  # ~ async def on_member_join(self, *args, **kwargs):
+    # ~ logging.info(u"{} entrou no servidor".format(args[0]))
+
+  async def on_ready(self):
+    logging.info(u"""Conectada com sucesso, o nosso nome de usuário é {0.user}\
+""".format(self))
+
   async def on_error(event, *args, **kwargs):
     logging.warning(
       u"event: {0}\n\nargs: {1}\n\nkwargs: {2}\n\nexception: {3}".format(
