@@ -26,7 +26,8 @@ async def change_role(ctx):
 def add_commands(bot: Bot):
   ## Altera cargo de acordo com comando
   @bot.command()
-  async def desenvolvedor(ctx):
+  async def dev(ctx):
+    ctx.command = 'desenvolvedor'
     await change_role(ctx)
   @bot.command()
   async def design(ctx):
