@@ -102,6 +102,21 @@ class MateClient(Client):
     await super().on_error(event, *args, **kwargs)
 
 class MateBot(Bot):
+  def __init__(self, *args, **kwargs):
+    ## Tratando as configurações
+    config = kwargs.get('config')
+    name = kwargs.get('name', 'matebot')
+    setattr(self, 'config_info',
+      config.bots[name]['info'] or config.default_bot['info'])
+    setattr(self, 'config_plugins',
+      config.bots[name]['plugins'] or config.default_bot['plugins'])
+    setattr(self, 'config_users',
+      config.bots[name]['users'] or config.default_bot['users'])
+    kwargs.pop('config', None)
+    kwargs.pop('name', None)
+    super().__init__(*args, **kwargs)
+    add_events(self)
+
   async def on_message(self, *args, **kwargs):
     logging.info(u"""Mensagem de {author} no canal #{channel} do servidor {guil\
 d}: {content}""".format(

@@ -51,6 +51,44 @@ class Config(BaseSettings):
       },
       ## Plugin personalidades
       'personalidade': 'default',
+      ## Plugin nsa20
+      'nsa20': {
+        ## Mensagens de boas vindas
+        ## Guild é servidor; channel é canal; message é mensagem
+        'welcome': [
+          {
+            'guild': 758076059009810542,
+            'channel': 759922966896836629,
+            'message': 760877039237988353,
+          },
+        ], # welcome
+        'procuro_equipe': {
+          'guild': 754457270208692281,
+          'channel': 760680677330518027,
+          'messages': [
+            760681027432874057,
+            760732091197161513,
+          ], # messages
+          ## São 22 no total
+          'desafios': {
+            '1': {
+              'guild': 754457270208692281,
+              'channel': 760685403417083936,
+              'message': 760730706887311361,
+            },
+            '2': {
+              'guild': 754457270208692281,
+              'channel': 760685886907088926,
+              'message': 760730908365029427,
+            },
+            '3': {
+              'guild': 754457270208692281,
+              'channel': 760686736702963742,
+              'message': 760735009421131776,
+            },
+          }, # desafios
+        }, # procuro_equipe
+      }, # nsa20
     }, # info
     
     ### Níveis de permissão (inspirados no Brave New World):
@@ -122,6 +160,10 @@ class Config(BaseSettings):
         ## Grupo para testar bots
         ## https://t.me/joinchat/CwFUFhbgApLHBMLoNnkiRg
         'test': -1001233916997,
+        ### Discord
+        'nsa20': 754457270208692281,
+        ## https://discord.gg/GD6EQM
+        'matebot': 758076059009810542,
       },
     }, # users
     

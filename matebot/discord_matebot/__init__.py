@@ -50,7 +50,7 @@ from matebot.discord_matebot.controllers.events import add_events
 def app(bot_name):
   try:
     bot = MateBot(command_prefix="!", config = config, name = bot_name)
-    add_events(bot)
+    # ~ add_events(bot)
     bot.run(config.bots[bot_name]['token'] or '')
   except KeyError as exception:
     logging.warning(u"""Problema com o arquivo de configuração. Já lerdes o man\

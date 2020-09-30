@@ -34,11 +34,34 @@ async def change_role_callback(ctx):
   logging.info(u"{0} mudou o cargo para {1}".format(ctx.author,
     str(ctx.command).capitalize()))
 
+async def change_role_welcome_callback(*args):
+  emoji = args[0]
+  member = args[1]
+  guild = args[2]
+  if emoji == ':computer:':
+    role = utils.get(guild.roles, name = 'Desenvolvedor')
+  elif emoji == ':briefcase:':
+    role = utils.get(guild.roles, name = 'Negócios')
+  elif emoji == ':microscope:':
+    role = utils.get(guild.roles, name = 'Cientista')
+  elif emoji == ':art:':
+    role = utils.get(guild.roles, name = 'Designer')
+  else:
+    role = None
+  if role is not None and member is not None:
+    await member.remove_roles(*[utils.get(guild.roles, name = cargo) \
+      for cargo in cargos])
+    await member.add_roles(role)
+    logging.info(u"{0} mudou o cargo para {1}".format(member, role))
+
 def add_commands(bot: Bot):
   ## Altera cargo de acordo com comando
   @bot.command()
   async def dev(ctx):
     ctx.command = 'desenvolvedor'
+    await change_role_callback(ctx)
+  @bot.command()
+  async def desenvolvedor(ctx):
     await change_role_callback(ctx)
   @bot.command()
   async def designer(ctx):
@@ -51,36 +74,29 @@ def add_commands(bot: Bot):
   async def cientista(ctx):
     await change_role_callback(ctx)
 
+  ## Altera cargo de acordo com emoji
   @bot.event
   async def on_raw_reaction_add(payload):
-   message_id = payload.message_id
-   ## Mensagem de boas vindas
-   if message_id in [760632139598528562, 760877039237988353]:
-    guild_id = payload.guild_id
-    guild = utils.find(lambda g : g.id == guild_id, bot.guilds)
-    emoji = emojis.decode(str(payload.emoji))
-    if emoji == ':computer:':
-      role = utils.get(guild.roles, name = 'Desenvolvedor')
-    elif emoji == ':briefcase:':
-      role = utils.get(guild.roles, name = 'Negócios')
-    elif emoji == ':microscope:':
-      role = utils.get(guild.roles, name = 'Cientista')
-    elif emoji == ':art:':
-      role = utils.get(guild.roles, name = 'Designer')
-    else:
-      role = None
-    if role is not None:
-      member = payload.member
-      if member is not None:
-        await member.remove_roles(*[utils.get(guild.roles, name = cargo) \
-          for cargo in cargos])
-        await member.add_roles(role)
-        logging.info(u"{0} mudou o cargo para {1}".format(member, role))
-      else:
-        logging.warning(u"Membro não encontrado.")
-    else:
-      logging.warning(u"Cargo não encontrado.")
-
+    emoji = emojis.decode(str(payload.emoji)) or None
+    message_id = payload.message_id
+    guild = utils.find(lambda g : g.id == payload.guild_id, bot.guilds)
+    channel = utils.find(lambda c : c.id == payload.channel_id, guild.channels)
+    member = payload.member or None
+    logging.info(u"{0} reagiu com {1} em {2} de {3}".format(
+      member or '',
+      emoji or '',
+      channel or '',
+      guild or '',
+    ))
+    ## Altera cargo de acordo com reação de emoji na mensagem de boas vindas
+    if emoji is not None and message_id in [welcome['message'] for welcome in \
+      bot.config_info['nsa20']['welcome']]:
+      change_role_welcome_callback(emoji,  member, guild)
   @bot.event
   async def on_raw_reaction_remove(payload):
+    pass
+
+  ## TODO Comando para desafios
+  @bot.command()
+  async def quero(ctx):
     pass
