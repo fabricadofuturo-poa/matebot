@@ -19,9 +19,17 @@ import logging
 from discord.ext.commands import Bot
 from discord import utils
 
+cargos = ['Desenvolvedor', 'Designer', 'Negocios', 'Cientista']
+
 async def change_role(ctx):
-  await ctx.message.author.edit(roles = [utils.get(ctx.message.guild.roles,
-    name = str(ctx.command).capitalize())])
+  await ctx.message.author.add_roles(utils.get(ctx.message.guild.roles,
+    name = str(ctx.command).capitalize()))
+  for cargo in cargos:
+    if str(ctx.command).capitalize() != cargo:
+      await ctx.message.author.remove_roles(utils.get(ctx.message.guild.roles,
+        name = cargo))
+  logging.info(u"{0} mudou o cargo para {1}".format(ctx.author,
+    str(ctx.command).capitalize()))
 
 def add_commands(bot: Bot):
   ## Altera cargo de acordo com comando
@@ -30,7 +38,7 @@ def add_commands(bot: Bot):
     ctx.command = 'desenvolvedor'
     await change_role(ctx)
   @bot.command()
-  async def design(ctx):
+  async def designer(ctx):
     await change_role(ctx)
   @bot.command()
   async def negocios(ctx):
