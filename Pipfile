@@ -25,6 +25,7 @@ hypercorn = "*"
 pydantic = "*"
 validators = "*"
 "discord.py" = "*"
+emojis = "*"
 
 [requires]
 python_version = "3"

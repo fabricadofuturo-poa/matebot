@@ -102,15 +102,15 @@ class MateClient(Client):
     await super().on_error(event, *args, **kwargs)
 
 class MateBot(Bot):
-  # ~ async def on_message(self, *args, **kwargs):
-    # ~ logging.info(u"""Mensagem de {author} no canal #{channel} do servidor {guil\
-# ~ d}: {content}""".format(
-        # ~ author = args[0].author or '',
-        # ~ channel = args[0].channel or '',
-        # ~ guild = args[0].guild or '',
-        # ~ content = args[0].content or '',
-      # ~ )
-    # ~ )
+  async def on_message(self, *args, **kwargs):
+    logging.info(u"""Mensagem de {author} no canal #{channel} do servidor {guil\
+d}: {content}""".format(
+        author = args[0].author or '',
+        channel = args[0].channel or '',
+        guild = args[0].guild or '',
+        content = args[0].content or '',
+      )
+    )
 
   # ~ async def on_member_join(self, *args, **kwargs):
     # ~ logging.info(u"{} entrou no servidor".format(args[0]))
