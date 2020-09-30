@@ -22,7 +22,7 @@ from discord import utils
 
 ## TODO: garantir que os cargos existem (testar a existência e criar se necessá\
 ## rio)
-cargos = ['Desenvolvedor', 'Designer', 'Negocios', 'Cientista']
+cargos = ['Desenvolvedor', 'Designer', 'Negócios', 'Cientista']
 
 async def change_role_callback(ctx):
   await ctx.message.author.add_roles(utils.get(ctx.message.guild.roles,
@@ -72,10 +72,9 @@ def add_commands(bot: Bot):
     if role is not None:
       member = payload.member
       if member is not None:
+        await member.remove_roles(*[utils.get(guild.roles, name = cargo) \
+          for cargo in cargos])
         await member.add_roles(role)
-        for cargo in cargos:
-          if role != cargo:
-            await member.remove_roles(utils.get(guild.roles, name = cargo))
         logging.info(u"{0} mudou o cargo para {1}".format(member, role))
       else:
         logging.warning(u"Membro não encontrado.")
