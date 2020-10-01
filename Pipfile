@@ -26,6 +26,7 @@ pydantic = "*"
 validators = "*"
 "discord.py" = "*"
 emojis = "*"
+redis = "*"
 
 [requires]
 python_version = "3"

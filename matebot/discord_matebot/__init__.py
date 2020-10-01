@@ -62,6 +62,7 @@ i encontrada no arquivo de configuração: {}""".format(str(exception)))
 al do Discord.""")
   except Exception as exception:
     logging.warning(u"Deu Errado: {}".format(repr(exception)))
+    raise
 
 ### Código do Pedrinho
 ### FIXME portar tudo pro plugin nsa20

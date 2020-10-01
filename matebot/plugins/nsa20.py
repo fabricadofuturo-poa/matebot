@@ -20,9 +20,20 @@ import emojis, logging
 from discord.ext.commands import Bot
 from discord import utils
 
+from matebot.plugins.nosql import redis_db
+
+db = redis_db(db = 1)
 ## TODO: garantir que os cargos existem (testar a existência e criar se necessá\
 ## rio)
 cargos = ['Desenvolvedor', 'Designer', 'Negócios', 'Cientista']
+def check_desafios(desafios):
+  pass
+  ## FIXME voltar a ler o manual do Redis
+  # ~ for desafio in range(1,22):
+    # ~ try:
+      # ~ db.set('desafio_' + str(desafio), desafios.get(str(desafio)))
+    # ~ except Exception as exception:
+      # ~ logging.warning(repr(exception))
 
 async def change_role_callback(ctx):
   await ctx.message.author.add_roles(utils.get(ctx.message.guild.roles,
@@ -33,6 +44,9 @@ async def change_role_callback(ctx):
         name = cargo))
   logging.info(u"{0} mudou o cargo para {1}".format(ctx.author,
     str(ctx.command).capitalize()))
+
+async def cadastrar_desafio_callback(ctx):
+  pass
 
 async def change_role_welcome_callback(*args):
   emoji = args[0]
@@ -54,7 +68,16 @@ async def change_role_welcome_callback(*args):
     await member.add_roles(role)
     logging.info(u"{0} mudou o cargo para {1}".format(member, role))
 
+async def cadastrar_desafio_emoji_callback(*args):
+  emoji = args[0]
+  member = args[1]
+  pass ## FIXME
+
 def add_commands(bot: Bot):
+  ## Popular o banco de dados com os dados da configuração
+  ## FIXME pensar em formas que exigem menos interação manual para fazer isto
+  check_desafios(bot.config_info['nsa20']['procuro_equipe']['desafios'])
+
   ## Altera cargo de acordo com comando
   @bot.command()
   async def dev(ctx):
@@ -74,7 +97,6 @@ def add_commands(bot: Bot):
   async def cientista(ctx):
     await change_role_callback(ctx)
 
-  ## Altera cargo de acordo com emoji
   @bot.event
   async def on_raw_reaction_add(payload):
     emoji = emojis.decode(str(payload.emoji)) or None
@@ -91,12 +113,15 @@ def add_commands(bot: Bot):
     ## Altera cargo de acordo com reação de emoji na mensagem de boas vindas
     if emoji is not None and message_id in [welcome['message'] for welcome in \
       bot.config_info['nsa20']['welcome']]:
-      change_role_welcome_callback(emoji,  member, guild)
+      await change_role_welcome_callback(emoji,  member, guild)
+    ## Cadastra intenção de participar de desafio através de emoji
+    elif emoji is not None and message_id in [message for message in \
+      bot.config_info['nsa20']['procuro_equipe']['messages']]:
+      await cadastrar_desafio_emoji_callback(emoji, member)
   @bot.event
   async def on_raw_reaction_remove(payload):
     pass
 
-  ## TODO Comando para desafios
   @bot.command()
   async def quero(ctx):
-    pass
+    cadastrar_desafio_callback(ctx)
